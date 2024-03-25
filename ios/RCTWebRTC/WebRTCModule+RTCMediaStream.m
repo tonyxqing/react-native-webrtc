@@ -16,6 +16,25 @@
 
 @implementation WebRTCModule (RTCMediaStream)
 
+typedef NS_ENUM(NSInteger, RCTCameraCaptureTarget) {
+    RCTCameraCaptureTargetMemory = 0,
+    RCTCameraCaptureTargetDisk = 1,
+    RCTCameraCaptureTargetTemp = 2,
+    RCTCameraCaptureTargetCameraRoll = 3
+};
+
+- (NSDictionary *)constantsToExport
+{
+    return @{
+             @"CaptureTarget": @{
+                     @"memory": @(RCTCameraCaptureTargetMemory),
+                     @"disk": @(RCTCameraCaptureTargetDisk),
+                     @"temp": @(RCTCameraCaptureTargetTemp),
+                     @"cameraRoll": @(RCTCameraCaptureTargetCameraRoll)
+                }
+             };
+}
+
 #pragma mark - getUserMedia
 
 /**
@@ -424,6 +443,20 @@ RCT_EXPORT_METHOD(mediaStreamTrackSetVolume : (nonnull NSNumber *)pcId : (nonnul
     }
 
     return peerConnection.remoteTracks[trackId];
+}
+
+RCT_EXPORT_METHOD(takePicture:(NSDictionary *)options
+                  trackID:(nonnull NSString *)trackID
+                  successCallback:(RCTResponseSenderBlock)successCallback
+                  errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RTCMediaStreamTrack *track = self.localTracks[trackID];
+    if (track && track.isEnabled) {
+		RTCVideoTrack *videoTrack = (RTCVideoTrack *)track;
+		VideoCaptureController *vcc = (VideoCaptureController*) videoTrack.captureController;
+        [vcc takePicture:options successCallback:successCallback errorCallback:errorCallback];
+    } else {
+        errorCallback(@[ [NSString stringWithFormat:@"Invalid track ID %@", trackID] ]);
+    }
 }
 
 @end

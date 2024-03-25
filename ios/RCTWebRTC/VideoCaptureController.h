@@ -3,6 +3,11 @@
 #import <Foundation/Foundation.h>
 #import <WebRTC/RTCCameraVideoCapturer.h>
 
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTLog.h>
+#import <React/RCTUtils.h>
+
 #import "CaptureController.h"
 
 @interface VideoCaptureController : CaptureController
@@ -13,6 +18,10 @@
 - (void)startCapture;
 - (void)stopCapture;
 - (void)switchCamera;
+
+- (void)takePicture:(NSDictionary *)options
+    successCallback:(RCTResponseSenderBlock)successCallback
+      errorCallback:(RCTResponseSenderBlock)errorCallback;
 
 @end
 #endif

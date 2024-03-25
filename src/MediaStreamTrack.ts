@@ -1,4 +1,4 @@
-import { EventTarget, Event, defineEventAttribute } from 'event-target-shim/index';
+import { EventTarget, Event, defineEventAttribute } from 'event-target-shim';
 import { NativeModules } from 'react-native';
 
 import { addListener, removeListener } from './EventEmitter';
@@ -28,6 +28,23 @@ type MediaStreamTrackEventMap = {
     unmute: Event<'unmute'>;
 }
 
+type SnapshotOptions = {
+	captureTarget: string,
+	maxSize: number,
+	maxJpegQuality: number
+}
+
+function convertToNativeOptions(options) {
+	let mutableDefaults = {maxSize: 2000, maxJpegQuality: 1.0};
+	mutableDefaults.maxSize = MediaStreamTrack.defaults.maxSize;
+	mutableDefaults.maxJpegQuality = MediaStreamTrack.defaults.maxJpegQuality;
+	const mergedOptions = Object.assign(mutableDefaults, options);
+	if (typeof mergedOptions.captureTarget === 'string') {
+		mergedOptions.captureTarget = WebRTCModule.CaptureTarget[options.captureTarget];
+	}
+	return mergedOptions;
+}
+
 export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventMap> {
     _constraints: object;
     _enabled: boolean;
@@ -40,6 +57,21 @@ export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventM
     readonly kind: string;
     readonly label: string = '';
     readonly remote: boolean;
+
+	static constants = {
+		captureTarget: {
+			memory: 'memory',
+			temp: 'temp',
+			disk: 'disk',
+			cameraRoll: 'cameraRoll',
+		}
+	}
+	
+	static defaults = {
+		captureTarget: MediaStreamTrack.constants.captureTarget.temp,
+		maxSize: 5000,
+		maxJpegQuality: 1
+	}
 
     constructor(info: MediaStreamTrackInfo) {
         super();
@@ -149,6 +181,11 @@ export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventM
 
         WebRTCModule.mediaStreamTrackSetVolume(this.remote ? this._peerConnectionId : -1, this.id, volume);
     }
+
+	takePicture(options: SnapshotOptions, success: (path: string) => void, error: (err) => void) {
+		let nativeOptions = convertToNativeOptions(options);
+		WebRTCModule.takePicture(nativeOptions, this.id, success, error);
+	}
 
     applyConstraints(): never {
         throw new Error('Not implemented.');
