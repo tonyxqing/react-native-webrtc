@@ -186,6 +186,10 @@ class GetUserMediaImpl {
         return array;
     }
 
+	private ReactApplicationContext getReactApplicationContext() {
+        return reactContext;
+    }
+
     MediaStreamTrack getTrack(String id) {
         TrackPrivate private_ = tracks.get(id);
 
