@@ -13,6 +13,12 @@ android {
     compileSdkVersion safeExtGet('compileSdkVersion', 24)
     buildToolsVersion safeExtGet('buildToolsVersion', "23.0.1")
 
+	sourceSets {
+		main {
+			jniLibs.srcDirs = ['libs']
+		}
+	}
+
     defaultConfig {
         minSdkVersion safeExtGet('minSdkVersion', 24)
         targetSdkVersion safeExtGet('targetSdkVersion', 24)
@@ -30,5 +36,5 @@ android {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api 'org.jitsi:webrtc:118.+'
+	implementation files('libs/libwebrtc.jar')
 }
