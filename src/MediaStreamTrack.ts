@@ -182,10 +182,13 @@ export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventM
         WebRTCModule.mediaStreamTrackSetVolume(this.remote ? this._peerConnectionId : -1, this.id, volume);
     }
 
-	takePicture(options: SnapshotOptions, success: (path: string) => void, error: (err) => void) {
-		let nativeOptions = convertToNativeOptions(options);
-		WebRTCModule.takePicture(nativeOptions, this.id, success, error);
-	}
+    takePicture(options: SnapshotOptions, success: (path: string) => void, error: (err) => void) {
+        const nativeOptions = convertToNativeOptions(options);
+
+        console.log('I\'m taking picture');
+
+        WebRTCModule.takePicture(nativeOptions, this.id, success, error);
+    }
 
     applyConstraints(): never {
         throw new Error('Not implemented.');

@@ -186,7 +186,7 @@ class GetUserMediaImpl {
         return array;
     }
 
-	private ReactApplicationContext getReactApplicationContext() {
+    private ReactApplicationContext getReactApplicationContext() {
         return reactContext;
     }
 
