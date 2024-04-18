@@ -8,7 +8,6 @@ import { deepClone } from './RTCUtil';
 const log = new Logger('pc');
 const { WebRTCModule } = NativeModules;
 
-
 type MediaStreamTrackState = 'live' | 'ended';
 
 export type MediaStreamTrackInfo = {
@@ -20,29 +19,32 @@ export type MediaStreamTrackInfo = {
     settings: object;
     peerConnectionId: number;
     readyState: MediaStreamTrackState;
-}
+};
 
 type MediaStreamTrackEventMap = {
     ended: Event<'ended'>;
     mute: Event<'mute'>;
     unmute: Event<'unmute'>;
-}
+};
 
 type SnapshotOptions = {
-	captureTarget: string,
-	maxSize: number,
-	maxJpegQuality: number
-}
+    captureTarget: string;
+    maxSize: number;
+    maxJpegQuality: number;
+};
 
 function convertToNativeOptions(options) {
-	let mutableDefaults = {maxSize: 2000, maxJpegQuality: 1.0};
-	mutableDefaults.maxSize = MediaStreamTrack.defaults.maxSize;
-	mutableDefaults.maxJpegQuality = MediaStreamTrack.defaults.maxJpegQuality;
-	const mergedOptions = Object.assign(mutableDefaults, options);
-	if (typeof mergedOptions.captureTarget === 'string') {
-		mergedOptions.captureTarget = WebRTCModule.CaptureTarget[options.captureTarget];
-	}
-	return mergedOptions;
+    const mutableDefaults = { maxSize: 2000, maxJpegQuality: 1.0 };
+
+    mutableDefaults.maxSize = MediaStreamTrack.defaults.maxSize;
+    mutableDefaults.maxJpegQuality = MediaStreamTrack.defaults.maxJpegQuality;
+    const mergedOptions = Object.assign(mutableDefaults, options);
+
+    if (typeof mergedOptions.captureTarget === 'string') {
+        mergedOptions.captureTarget = WebRTCModule.CaptureTarget[options.captureTarget];
+    }
+
+    return mergedOptions;
 }
 
 export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventMap> {
@@ -58,20 +60,20 @@ export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventM
     readonly label: string = '';
     readonly remote: boolean;
 
-	static constants = {
-		captureTarget: {
-			memory: 'memory',
-			temp: 'temp',
-			disk: 'disk',
-			cameraRoll: 'cameraRoll',
-		}
-	}
-	
-	static defaults = {
-		captureTarget: MediaStreamTrack.constants.captureTarget.temp,
-		maxSize: 5000,
-		maxJpegQuality: 1
-	}
+    static constants = {
+        captureTarget: {
+            memory: 'memory',
+            temp: 'temp',
+            disk: 'disk',
+            cameraRoll: 'cameraRoll'
+        }
+    };
+
+    static defaults = {
+        captureTarget: MediaStreamTrack.constants.captureTarget.temp,
+        maxSize: 5000,
+        maxJpegQuality: 1
+    };
 
     constructor(info: MediaStreamTrackInfo) {
         super();
@@ -142,7 +144,7 @@ export default class MediaStreamTrack extends EventTarget<MediaStreamTrackEventM
         WebRTCModule.mediaStreamTrackSwitchCamera(this.id);
     }
 
-    _setVideoEffect(name:string) {
+    _setVideoEffect(name: string) {
         if (this.remote) {
             throw new Error('Not implemented for remote tracks');
         }

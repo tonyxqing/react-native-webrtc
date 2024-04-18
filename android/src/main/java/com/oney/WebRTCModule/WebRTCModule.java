@@ -29,10 +29,10 @@ import org.webrtc.audio.AudioDeviceModule;
 import org.webrtc.audio.JavaAudioDeviceModule;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -1417,7 +1417,7 @@ public class WebRTCModule extends ReactContextBaseJavaModule {
             pco.dataChannelSend(reactTag, data, type);
         });
     }
-	public static final int RCT_CAMERA_CAPTURE_TARGET_MEMORY = 0;
+    public static final int RCT_CAMERA_CAPTURE_TARGET_MEMORY = 0;
     public static final int RCT_CAMERA_CAPTURE_TARGET_DISK = 1;
     public static final int RCT_CAMERA_CAPTURE_TARGET_CAMERA_ROLL = 2;
     public static final int RCT_CAMERA_CAPTURE_TARGET_TEMP = 3;
@@ -1441,7 +1441,8 @@ public class WebRTCModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void takePicture(final ReadableMap options, final String trackId, final Callback successCallback, final Callback errorCallback){
+    public void takePicture(final ReadableMap options, final String trackId, final Callback successCallback,
+            final Callback errorCallback) {
         getUserMediaImpl.takePicture(options, trackId, successCallback, errorCallback);
     }
 
