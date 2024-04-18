@@ -1443,6 +1443,12 @@ public class WebRTCModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void takePicture(final ReadableMap options, final String trackId, final Callback successCallback,
             final Callback errorCallback) {
+		Log.w(TAG, "Native Take Picture:");
+		if (getUserMediaImpl != null) {
+			Log.w(TAG, "getUserMedia Exists!");
+		} else {
+			Log.w(TAG, "getUserMedia Does Not Exist!");
+		}
         getUserMediaImpl.takePicture(options, trackId, successCallback, errorCallback);
     }
 

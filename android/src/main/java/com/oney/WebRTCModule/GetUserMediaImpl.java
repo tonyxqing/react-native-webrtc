@@ -520,14 +520,14 @@ class GetUserMediaImpl {
         final int captureTarget = options.getInt("captureTarget");
         final double maxJpegQuality = options.getDouble("maxJpegQuality");
         final int maxSize = options.getInt("maxSize");
-
+        Log.w(TAG, "inside take picture");
         if (!tracks.containsKey(trackId)) {
             errorCallback.invoke("Invalid trackId " + trackId);
             return;
         }
 
         VideoCapturer vc = tracks.get(trackId).videoCaptureController.getVideoCapturer();
-
+        Log.w(TAG, "no problem getting video captuerer");
         if (!(vc instanceof CameraCapturer)) {
             errorCallback.invoke("Wrong class in package");
         } else {
@@ -535,9 +535,10 @@ class GetUserMediaImpl {
             camCap.takeSnapshot(new CameraCapturer.SingleCaptureCallBack() {
                 @Override
                 public void captureSuccess(byte[] jpeg) {
-                    if (captureTarget == WebRTCModule.RCT_CAMERA_CAPTURE_TARGET_MEMORY)
+                    if (captureTarget == WebRTCModule.RCT_CAMERA_CAPTURE_TARGET_MEMORY) {
+                        Log.w(TAG, "Yippeee");
                         successCallback.invoke(Base64.getEncoder().encodeToString(jpeg));
-                    else {
+                    } else {
                         try {
                             String path = savePicture(jpeg, captureTarget, maxJpegQuality, maxSize);
                             successCallback.invoke(path);
