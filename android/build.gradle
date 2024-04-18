@@ -10,7 +10,7 @@ android {
       namespace "com.oney.WebRTCModule"
     }
 
-    compileSdkVersion safeExtGet('compileSdkVersion', 26)
+    compileSdkVersion safeExtGet('compileSdkVersion', 24)
     buildToolsVersion safeExtGet('buildToolsVersion', "23.0.1")
 
 	sourceSets {
@@ -20,8 +20,8 @@ android {
 	}
 
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 26)
-        targetSdkVersion safeExtGet('targetSdkVersion', 26)
+        minSdkVersion safeExtGet('minSdkVersion', 24)
+        targetSdkVersion safeExtGet('targetSdkVersion', 24)
         versionCode 1
         versionName "1.0"
     }
