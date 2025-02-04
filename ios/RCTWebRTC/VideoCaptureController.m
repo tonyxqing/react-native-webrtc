@@ -64,18 +64,36 @@ AVCaptureStillImageOutput *stillImageOutput = nil;
                                             // Get metadata orientation
                                             if ([[UIDevice currentDevice] orientation] ==
                                                 UIInterfaceOrientationLandscapeLeft) {
-                                                if (self->_usingFrontCamera)
-                                                    rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
-                                                else
+                                                if (self->_usingFrontCamera) {
+                                                    rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0]; 
+                                                }
+                                                else {
                                                     rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:180];
-                                            } else {  // if ([[UIDevice currentDevice] orientation] ==
-                                                      // UIInterfaceOrientationLandscapeRight) {
-                                                if (self->_usingFrontCamera)
+                                                }
+                                            } else if ([[UIDevice currentDevice] orientation] ==
+                                                UIInterfaceOrientationLandscapeRight) {
+                                                if (self->_usingFrontCamera) {
                                                     rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:180];
-                                                else
+                                                }
+                                                else {
                                                     rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
+                                                }
+                                            } else if ([[UIDevice currentDevice] orientation] ==
+                                                UIInterfaceOrientationPortrait) {
+                                                if (self->_usingFrontCamera) {
+                                                    rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:90];
+                                                }
+                                                else {
+                                                    rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:270];
+                                                }
+                                            } else {
+                                                if (self->_usingFrontCamera) {
+                                                    rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:270];
+                                                }
+                                                else {
+                                                    rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:90];
+                                                }
                                             }
-
                                             /*
                                             if (metadataOrientation == 6) {
                                                 rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:270];
